@@ -1,0 +1,15 @@
+name: Auto-close completed issues
+
+on:
+  issues:
+    types: [opened, labeled]
+
+jobs:
+  auto-close:
+    runs-on: ubuntu-latest
+    if: contains(github.event.issue.labels.*.name, 'completed')
+    steps:
+      - name: Close issue
+        run: gh issue close ${{ github.event.issue.number }} --repo ${{ github.repository }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
